@@ -32,6 +32,12 @@
             android:label = "Log Activity">
 
         </activity>
+        <activity
+            android:name=".LogHistory"
+            android:label = "Log History" >
+
+        </activity>
+
     </application>
 
 </manifest>

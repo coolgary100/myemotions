@@ -28,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.text.DateFormatSymbols;
 import com.android.volley.RequestQueue;
 import android.content.Context;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,12 +39,10 @@ public class CalendarActivity extends Fragment {
     CaldroidFragment caldroidFragment;
     private RequestQueue mQueue;
     Context mContext;
-    JSONObject output;
     ArrayList<Double> listHappy = new ArrayList<>();
     ArrayList<Double> listSad = new ArrayList<>();
     ArrayList<Double> listNeutral = new ArrayList<>();
     ArrayList<Date> listDate = new ArrayList<>();
-    int month;
 
     @Nullable
     @Override
@@ -52,6 +51,15 @@ public class CalendarActivity extends Fragment {
         View myView = inflater.inflate(R.layout.activity_calendar, container, false);
 
         FloatingActionButton moodButton = myView.findViewById(R.id.moodLog);
+
+        FloatingActionButton historyButton = myView.findViewById(R.id.logHistory);
+
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), LogHistory.class));
+            }
+        });
 
         moodButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,48 +80,13 @@ public class CalendarActivity extends Fragment {
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.SUNDAY);
 
-
-//        for(int i = 0; i < listHappy.size(); i++) {
-//
-//            double max = Math.max(listHappy.get(i), Math.max(listSad.get(i), listNeutral.get(i)));
-//
-//            System.out.println(max);
-//            System.out.println(listHappy.get(i));
-//            System.out.println(listSad.get(i));
-//            System.out.println(listNeutral.get(i));
-//            System.out.println(listDate.get(i));
-//
-//            if (max == listHappy.get(i)) {
-//                if (max >= 0.7) {
-//                    System.out.println("SuperHappy");
-//                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.veryhappy), listDate.get(i));
-//                } else {
-//                    System.out.println("Happy");
-//                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.happy), listDate.get(i));
-//                }
-//            } else if (max == listSad.get(i)) {
-//                if (max >= 0.7) {
-//                    System.out.println("SuperSad");
-//                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.verysad), listDate.get(i));
-//                } else {
-//                    System.out.println("Sad");
-//                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.sad), listDate.get(i));
-//                }
-//            } else {
-//                System.out.println("Neutral");
-//                caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.neutral), listDate.get(i));
-//            }
-//        }
-
-        //System.out.println("Get Month is: " + caldroidFragment.getMonth());
-
         caldroidFragment.setArguments(args);
 
         return myView;
     }
 
     private void jsonParse() {
-        String url = "https://nw-mood-server.herokuapp.com/getMoods/12345/122018";
+        String url = "https://nw-mood-server.herokuapp.com/getMoods/12345/12019";
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest( url,
                 new Response.Listener<JSONArray>() {
@@ -153,73 +126,35 @@ public class CalendarActivity extends Fragment {
         mQueue.add(jsonArrayRequest);
     }
 
-
-//        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
-//                new Response.Listener<JSONArray>() {
-//                    @Override
-//                    public void onResponse(JSONArray response) {
-//                        try {
-//                            for(int i = 0; i < response.length(); i++) {
-//                                JSONObject january = response.getJSONObject(i);
-//                                double happy = Double.parseDouble(january.getString("mood_happy"));
-//                                double sad = Double.parseDouble(january.getString("mood_sad"));
-//                                double neutral = Double.parseDouble(january.getString("mood_neutral"));
-//                                String date = january.getString("timestamp");
-//                                Date newDate = new SimpleDateFormat("MM/dd/yyyy").parse(date);
-//                                listHappy.add(happy);
-//                                listSad.add(sad);
-//                                listNeutral.add(neutral);
-//                                listDate.add(newDate);
-//
-//                            }
-//
-//                            alterCalendar();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        } catch (ParseException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                },
-//                new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError error) {
-//                        error.printStackTrace();
-//                    }
-//                }
-//        );
-//
-//        mQueue.add(request);
-
     private void alterCalendar() {
         for(int i = 0; i < listHappy.size(); i++) {
 
             double max = Math.max(listHappy.get(i), Math.max(listSad.get(i), listNeutral.get(i)));
 
-            System.out.println(max);
-            System.out.println(listHappy.get(i));
-            System.out.println(listSad.get(i));
-            System.out.println(listNeutral.get(i));
-            System.out.println(listDate.get(i));
+            //System.out.println(max);
+            //System.out.println(listHappy.get(i));
+            //System.out.println(listSad.get(i));
+            //System.out.println(listNeutral.get(i));
+            //System.out.println(listDate.get(i));
 
             if (max == listHappy.get(i)) {
                 if (max >= 0.7) {
-                    System.out.println("SuperHappy");
+                    //System.out.println("SuperHappy");
                     caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.veryhappy), listDate.get(i));
                 } else {
-                    System.out.println("Happy");
+                    //System.out.println("Happy");
                     caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.happy), listDate.get(i));
                 }
             } else if (max == listSad.get(i)) {
                 if (max >= 0.7) {
-                    System.out.println("SuperSad");
+                    //System.out.println("SuperSad");
                     caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.verysad), listDate.get(i));
                 } else {
-                    System.out.println("Sad");
+                    //System.out.println("Sad");
                     caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.sad), listDate.get(i));
                 }
             } else {
-                System.out.println("Neutral");
+                //System.out.println("Neutral");
                 caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.neutral), listDate.get(i));
             }
         }

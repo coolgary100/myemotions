@@ -5,17 +5,18 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ArrayAdapter extends android.widget.ArrayAdapter {
+public class MyAdapter extends ArrayAdapter<String> {
 
 
     int[] moodNames;
     String[] logMood;
     Context mContext;
 
-    public ArrayAdapter(Context context, int[] moodList, String[] moodLogs) {
+    public MyAdapter(Context context, int[] moodList, String[] moodLogs) {
         super(context, R.layout.activity_listview);
         this.moodNames = moodList;
         this.logMood = moodLogs;
