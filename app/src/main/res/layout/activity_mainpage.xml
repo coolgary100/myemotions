@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent" >
 
     <!-- This LinearLayout represents the contents of the screen  -->
     <LinearLayout
@@ -15,11 +15,6 @@
         <!-- The ActionBar displayed at the top -->
         <include
             layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/addlogbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

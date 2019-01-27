@@ -8,4 +8,66 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Very Happy Style. -->
+    <style name="CaldroidDefaultVeryHappy" parent="CaldroidDefault">
+        <item name="styleCaldroidSquareCell">@style/VeryHappy</item>
+    </style>
+
+    <style name="VeryHappy" parent="CaldroidDefaultCell">
+        <item name="android:textColor">@color/caldroid_light_red</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/veryhappy</item>
+    </style>
+
+    <!-- Very Sad Style. -->
+    <style name="CaldroidDefaultVerySad" parent="CaldroidDefault">
+        <item name="styleCaldroidSquareCell">@style/VerySad</item>
+    </style>
+
+    <style name="VerySad" parent="CaldroidDefaultCell">
+        <item name="android:textColor">@color/caldroid_holo_blue_dark</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/verysad</item>
+    </style>
+
+
+    <!-- Happy Style -->
+    <style name="CaldroidDefaultHappy" parent="CaldroidDefault">
+        <item name="styleCaldroidSquareCell">@style/Happy</item>
+    </style>
+
+    <style name="Happy" parent="CaldroidDefaultCell">
+        <item name="android:textColor">@color/caldroid_gray</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/happy</item>
+    </style>
+
+
+    <!-- Sad Style -->
+    <style name="CaldroidDefaultSad" parent="CaldroidDefault">
+        <item name="styleCaldroidSquareCell">@style/Sad</item>
+    </style>
+
+    <style name="Sad" parent="CaldroidDefaultCell">
+        <item name="android:textColor">@color/caldroid_holo_blue_light</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/sad</item>
+    </style>
+
+    <!-- Neutral Style -->
+    <style name="CaldroidDefaultNeutral" parent="CaldroidDefault">
+        <item name="styleCaldroidSquareCell">@style/Neutral</item>
+    </style>
+
+    <style name="Neutral" parent="CaldroidDefaultCell">
+        <item name="android:textColor">@color/caldroid_black</item>
+        <item name="android:layout_alignParentTop">true</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:background">@drawable/neutral</item>
+    </style>
+
 </resources>

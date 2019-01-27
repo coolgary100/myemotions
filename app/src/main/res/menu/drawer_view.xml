@@ -4,14 +4,14 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_calendar"
-            android:title="Calendar"
+            android:title="MyEmotion - Calendar"
             android:checked="true" />
         <item
             android:id="@+id/nav_graph"
-            android:title="Graph" />
+            android:title="MyEmotion - Graph" />
         <item
             android:id="@+id/nav_dailygraph"
-            android:title="DailyGraph" />
+            android:title="MyEmotion - DailyGraph" />
     </group>
 
 </menu>
