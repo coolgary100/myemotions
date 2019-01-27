@@ -1,0 +1,18 @@
+{
+  "buildFiles": [
+    "/Users/garyjiang/Desktop/MyEmotions/app/../../../Library/Android/sdk/ndk-bundle/build/cmake/android.toolchain.cmake",
+    "/Users/garyjiang/Desktop/MyEmotions/app/CMakeLists.txt",
+    "/Users/garyjiang/Desktop/MyEmotions/app/../../../Library/Android/sdk/ndk-bundle/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/garyjiang/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/garyjiang/Desktop/MyEmotions/app/.externalNativeBuild/cmake/debug/arm64-v8a --target clean"
+  ],
+  "libraries": {
+    "native-lib-Debug-arm64-v8a": {
+      "artifactName": "native-lib",
+      "buildCommand": "/Users/garyjiang/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/garyjiang/Desktop/MyEmotions/app/.externalNativeBuild/cmake/debug/arm64-v8a --target native-lib",
+      "abi": "arm64-v8a",
+      "output": "/Users/garyjiang/Desktop/MyEmotions/app/build/intermediates/cmake/debug/obj/arm64-v8a/libnative-lib.so"
+    }
+  }
+}

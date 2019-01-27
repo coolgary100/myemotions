@@ -1,0 +1,40 @@
+{
+  "stringTable": {
+    "0": "/Users/garyjiang/Desktop/MyEmotions/app/.externalNativeBuild/cmake/release/x86_64",
+    "1": "--target=x86_64-none-linux-android21 --gcc-toolchain=/Users/garyjiang/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64 -Dnative_lib_EXPORTS --sysroot /Users/garyjiang/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -fno-addrsig -Wa,--noexecstack -Wformat -Werror=format-security -stdlib=libc++ -O2 -DNDEBUG -fPIC"
+  },
+  "buildFiles": [
+    "/Users/garyjiang/Desktop/MyEmotions/app/../../../Library/Android/sdk/ndk-bundle/build/cmake/android.toolchain.cmake",
+    "/Users/garyjiang/Desktop/MyEmotions/app/CMakeLists.txt",
+    "/Users/garyjiang/Desktop/MyEmotions/app/../../../Library/Android/sdk/ndk-bundle/build/cmake/platforms.cmake"
+  ],
+  "cleanCommands": [
+    "/Users/garyjiang/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/garyjiang/Desktop/MyEmotions/app/.externalNativeBuild/cmake/release/x86_64 --target clean"
+  ],
+  "libraries": {
+    "native-lib-Release-x86_64": {
+      "buildCommand": "/Users/garyjiang/Library/Android/sdk/cmake/3.10.2.4988404/bin/cmake --build /Users/garyjiang/Desktop/MyEmotions/app/.externalNativeBuild/cmake/release/x86_64 --target native-lib",
+      "buildType": "release",
+      "toolchain": "1131675193",
+      "abi": "x86_64",
+      "artifactName": "native-lib",
+      "files": [
+        {
+          "src": "/Users/garyjiang/Desktop/MyEmotions/app/src/main/cpp/native-lib.cpp",
+          "flagsOrdinal": 1,
+          "workingDirectoryOrdinal": 0
+        }
+      ],
+      "output": "/Users/garyjiang/Desktop/MyEmotions/app/build/intermediates/cmake/release/obj/x86_64/libnative-lib.so"
+    }
+  },
+  "toolchains": {
+    "1131675193": {
+      "cppCompilerExecutable": "/Users/garyjiang/Library/Android/sdk/ndk-bundle/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++"
+    }
+  },
+  "cFileExtensions": [],
+  "cppFileExtensions": [
+    "cpp"
+  ]
+}

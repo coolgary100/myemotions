@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/moodImage"
+        android:layout_width="228dp"
+        android:layout_height="66dp"
+        android:padding="5dp"
+        app:srcCompat="@drawable/veryhappy" />
+
+    <TextView
+        android:id="@+id/moodText"
+        android:layout_width="152dp"
+        android:layout_height="69dp"
+        android:layout_toEndOf="@+id/moodImage"
+        android:layout_toRightOf="@+id/moodImage"
+        android:padding="5dp"
+        android:text="Very Happy"
+        android:textSize="21sp"
+        android:textAlignment="center"
+        android:textStyle="bold" />
+
+</RelativeLayout>
