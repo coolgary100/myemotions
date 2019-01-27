@@ -11,9 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.volley.Request;
+import com.android.volley.Request.Method;
 import com.android.volley.Response;
+import com.android.volley.Response.ErrorListener;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.Volley;
 import com.roomorama.caldroid.*;
 
@@ -28,11 +32,18 @@ import android.content.Context;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
+import java.util.ArrayList;
 
 public class CalendarActivity extends Fragment {
-
+    CaldroidFragment caldroidFragment;
     private RequestQueue mQueue;
     Context mContext;
+    JSONObject output;
+    ArrayList<Double> listHappy = new ArrayList<>();
+    ArrayList<Double> listSad = new ArrayList<>();
+    ArrayList<Double> listNeutral = new ArrayList<>();
+    ArrayList<Date> listDate = new ArrayList<>();
+    int month;
 
     @Nullable
     @Override
@@ -49,72 +60,170 @@ public class CalendarActivity extends Fragment {
             }
         });
 
-        CaldroidFragment caldroidFragment = new CaldroidFragment();
+        mContext = myView.getContext();
+
+        mQueue = Volley.newRequestQueue(mContext);
+
+        caldroidFragment = new CaldroidFragment();
+
+        jsonParse();
+
         Bundle args = new Bundle();
         Calendar cal = Calendar.getInstance();
         args.putInt(CaldroidFragment.START_DAY_OF_WEEK, CaldroidFragment.SUNDAY);
+
+
+//        for(int i = 0; i < listHappy.size(); i++) {
+//
+//            double max = Math.max(listHappy.get(i), Math.max(listSad.get(i), listNeutral.get(i)));
+//
+//            System.out.println(max);
+//            System.out.println(listHappy.get(i));
+//            System.out.println(listSad.get(i));
+//            System.out.println(listNeutral.get(i));
+//            System.out.println(listDate.get(i));
+//
+//            if (max == listHappy.get(i)) {
+//                if (max >= 0.7) {
+//                    System.out.println("SuperHappy");
+//                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.veryhappy), listDate.get(i));
+//                } else {
+//                    System.out.println("Happy");
+//                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.happy), listDate.get(i));
+//                }
+//            } else if (max == listSad.get(i)) {
+//                if (max >= 0.7) {
+//                    System.out.println("SuperSad");
+//                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.verysad), listDate.get(i));
+//                } else {
+//                    System.out.println("Sad");
+//                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.sad), listDate.get(i));
+//                }
+//            } else {
+//                System.out.println("Neutral");
+//                caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.neutral), listDate.get(i));
+//            }
+//        }
+
+        //System.out.println("Get Month is: " + caldroidFragment.getMonth());
+
         caldroidFragment.setArguments(args);
-
-        mQueue = Volley.newRequestQueue(mContext);
-        jsonParse(caldroidFragment);
-
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_caldroid, caldroidFragment).commit();
 
         return myView;
     }
 
-    private void jsonParse(final CaldroidFragment caldroidFragment) {
-        String url = "https://www.example.com/getThedata";
+    private void jsonParse() {
+        String url = "https://nw-mood-server.herokuapp.com/getMoods/12345/122018";
 
-        int month = caldroidFragment.getMonth();
-        final String currMonth = new DateFormatSymbols().getMonths()[month-1];
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest( url,
+                new Response.Listener<JSONArray>() {
+
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
-                            JSONArray jsonArray = response.getJSONArray(currMonth);
-                            for(int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject january = jsonArray.getJSONObject(i);
-                                double happy = Double.parseDouble(january.getString("mood_happy"));
-                                double sad = Double.parseDouble(january.getString("mood_sad"));
-                                double neutral = Double.parseDouble(january.getString("mood_neutral"));
-                                String date = january.getString("timestamp");
-                                double max = Math.max(happy, Math.max(sad, neutral));
+                            for(int i = 0; i < response.length(); i++) {
+                                JSONObject mood = response.getJSONObject(i);
+
+                                double happy = Double.parseDouble(mood.getString("mood_happy"));
+                                double sad = Double.parseDouble(mood.getString("mood_sad"));
+                                double neutral = Double.parseDouble(mood.getString("mood_neutral"));
+                                String date = mood.getString("timestamp");
                                 Date newDate = new SimpleDateFormat("MM/dd/yyyy").parse(date);
-                                if(max == happy) {
-                                    if(max >= 0.7) {
-                                        caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.veryhappy), newDate);
-                                    }
-                                    else {
-                                        caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.happy), newDate);
-                                    }
-                                }
-                                else if(max == sad) {
-                                    if(max >= 0.7) {
-                                        caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.verysad), newDate);
-                                    }
-                                    else {
-                                        caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.sad), newDate);
-                                    }
-                                }
-                                else {
-                                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.neutral), newDate);
-                                }
+                                listHappy.add(happy);
+                                listSad.add(sad);
+                                listNeutral.add(neutral);
+                                listDate.add(newDate);
                             }
-                        } catch (JSONException e) {
+
+                            alterCalendar();
+                    } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+                },
+                new ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                }
+        );
+        mQueue.add(jsonArrayRequest);
+    }
 
-        mQueue.add(request);
+
+//        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+//                new Response.Listener<JSONArray>() {
+//                    @Override
+//                    public void onResponse(JSONArray response) {
+//                        try {
+//                            for(int i = 0; i < response.length(); i++) {
+//                                JSONObject january = response.getJSONObject(i);
+//                                double happy = Double.parseDouble(january.getString("mood_happy"));
+//                                double sad = Double.parseDouble(january.getString("mood_sad"));
+//                                double neutral = Double.parseDouble(january.getString("mood_neutral"));
+//                                String date = january.getString("timestamp");
+//                                Date newDate = new SimpleDateFormat("MM/dd/yyyy").parse(date);
+//                                listHappy.add(happy);
+//                                listSad.add(sad);
+//                                listNeutral.add(neutral);
+//                                listDate.add(newDate);
+//
+//                            }
+//
+//                            alterCalendar();
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        error.printStackTrace();
+//                    }
+//                }
+//        );
+//
+//        mQueue.add(request);
+
+    private void alterCalendar() {
+        for(int i = 0; i < listHappy.size(); i++) {
+
+            double max = Math.max(listHappy.get(i), Math.max(listSad.get(i), listNeutral.get(i)));
+
+            System.out.println(max);
+            System.out.println(listHappy.get(i));
+            System.out.println(listSad.get(i));
+            System.out.println(listNeutral.get(i));
+            System.out.println(listDate.get(i));
+
+            if (max == listHappy.get(i)) {
+                if (max >= 0.7) {
+                    System.out.println("SuperHappy");
+                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.veryhappy), listDate.get(i));
+                } else {
+                    System.out.println("Happy");
+                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.happy), listDate.get(i));
+                }
+            } else if (max == listSad.get(i)) {
+                if (max >= 0.7) {
+                    System.out.println("SuperSad");
+                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.verysad), listDate.get(i));
+                } else {
+                    System.out.println("Sad");
+                    caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.sad), listDate.get(i));
+                }
+            } else {
+                System.out.println("Neutral");
+                caldroidFragment.setBackgroundDrawableForDate(getResources().getDrawable(R.drawable.neutral), listDate.get(i));
+            }
+        }
+
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_caldroid, caldroidFragment).commit();
     }
 }
